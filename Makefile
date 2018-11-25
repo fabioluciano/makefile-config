@@ -1,5 +1,7 @@
 UBUNTU_CODENAME = $(shell lsb_release -cs)
 
+VIVALDI_DEB = $(shell curl -sS https://vivaldi.com/download/ | grep -oP  '<a *?href="\K(?<link>.*?amd64.deb)"' | sed 's/"//g' | head -1)
+
 TERRAFORM_VERSION = '0.11.10'
 VAGRANT_VERSION = '2.2.1'
 PACKER_VERSION = '1.3.2'
@@ -8,27 +10,34 @@ PACKER_VERSION = '1.3.2'
 
 update:
 	sudo apt update --fix-missing
-	sudo apt dist-upgrade
 
 upgrade:
 	sudo apt dist-upgrade -y
 	sudo snap refresh
-	sudo flatpak update
 
 clean:
 	sudo apt autoremove -y && sudo apt autoclean -y && sudo apt clean all -y
 
 # Essentials
 
+essentials:
+	make prepare
+	make fonts
+	make python
+	make tmux
+	make zsh
+
 prepare:
-	sudo apt install vim curl wget git git libssl-dev apt-transport-https ca-certificates software-properties-common unzip
+	sudo apt install -y vim curl wget git git-flow libssl-dev apt-transport-https ca-certificates software-properties-common unzip bash-completion \
+		 gconf-service gconf-service-backend gconf2-common libgconf-2-4
 
 fonts:
 	echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
 	sudo apt install -y ttf-mscorefonts-installer
 
 	mkdir -p ~/.fonts
-	wget --content-disposition https://raw.githubusercontent.com/todylu/monaco.ttf/master/monaco.ttf -P ~/.fonts/
+	wget --content-disposition https://raw.githubusercontent.com/todylu/monaco.ttf/master/monaco.ttf -P ~/.fonts/monaco.ttf
+	chown ${USER}:${USER} ~/.fonts
 	fc-cache -v
 
 python:
@@ -40,17 +49,24 @@ tmux: files/tmux.conf
 	
 	cp files/tmux.conf ~/.tmux.conf
 	cp files/terminalrc ~/.config/xfce4/terminal
+	chown ${USER}:${USER} ~/.tmux.conf ~/.config/xfce4/terminal
 
 zsh: files/zshrc
-	make tmux
 	sudo apt install -y zsh
 	curl -L git.io/antigen > ~/.local-antigen.zsh
 	cp files/zshrc ~/.zshrc
-	sudo chsh --shell /usr/bin/zsh
+	sudo chsh --shell /usr/bin/zsh ${USER}
 
 # Development
 
-vscode: 
+development:
+	make vscode
+	make atom
+	make aws
+	make ansible
+	make hashicorp
+
+vscode:
 	wget https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode.deb
 	sudo dpkg -i vscode.deb
 	rm vscode.deb
@@ -61,8 +77,10 @@ atom:
 	sudo dpkg -i atom.deb
 	rm atom.deb
 
-nvm:
-	nvm install stable
+java:
+	sudo add-apt-repository ppa:linuxuprising/java -y
+	echo oracle-java11-installer shared/accepted-oracle-license-v1-2 select true | sudo /usr/bin/debconf-set-selections
+	sudo apt install -y oracle-java11-installer oracle-java11-set-default
 
 aws:
 	pip install awscli --upgrade --user
@@ -96,3 +114,35 @@ packer:
 	unzip packer.zip
 	sudo mv packer /usr/local/bin
 	rm packer.zip
+
+
+browsers:
+	make firefox
+	make chrome
+	make vivaldi
+	make opera
+
+vivaldi:
+	wget $(VIVALDI_DEB) -O  vivaldi.deb
+	sudo dpkg -i vivaldi.deb
+	rm vivaldi.deb
+
+chrome:
+	wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O chrome.deb
+	sudo dpkg -i chrome.deb
+	rm chrome.deb
+
+opera:
+	wget http://download4.operacdn.com/ftp/pub/opera/desktop/56.0.3051.99/linux/opera-stable_56.0.3051.99_amd64.deb -O opera.deb
+	sudo dpkg -i opera.deb
+	rm opera.deb
+
+firefox:
+	sudo apt install -y firefox
+
+tweaks:
+	make synapse
+
+synapse:
+	sudo add-apt-repository ppa:synapse-core/testing -y
+	sudo apt install -y synapse
