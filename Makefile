@@ -2,34 +2,40 @@ UBUNTU_CODENAME = $(shell lsb_release -cs)
 
 VIVALDI_DEB = $(shell curl -sS https://vivaldi.com/download/ | grep -oP  '<a *?href="\K(?<link>.*?amd64.deb)"' | sed 's/"//g' | head -1)
 
-TERRAFORM_VERSION = '0.11.10'
-VAGRANT_VERSION = '2.2.1'
-PACKER_VERSION = '1.3.2'
+TERRAFORM_VERSION = 0.11.10
+VAGRANT_VERSION = 2.2.1
+PACKER_VERSION = 1.3.2
+DOCKER_COMPOSE_VERSION = 1.23.1
+VIRTUALBOX_EXTPACK_VERSION = 5.2.22
 
-.PHONY:  update upgrade clean prepare fonts
 
+
+all: upgrade essentials development browsers tweaks tools audio design icons themes other
 update:
 	sudo apt update --fix-missing
 
-upgrade:
+upgrade: update prepare
 	sudo apt dist-upgrade -y
 	sudo snap refresh
+	sudo flatpak update
 
 clean:
 	sudo apt autoremove -y && sudo apt autoclean -y && sudo apt clean all -y
 
+essentials: prepare fonts python tmux zsh java
+development: vscode atom sublimetext aws ansible hashicorp docker other_development
+browsers: firefox chrome vivaldi opera
+tweaks: synapse atareao yktoo compiz
+tools: virtualbox skype plank qbittorrent corebird vlc tilix shutter
+audio: spotify other_audio
+design: inkscape gimp other_design
+icons: icon_noobslab icon_papirus
+themes: theme_noobslab
+
 # Essentials
-
-essentials:
-	make prepare
-	make fonts
-	make python
-	make tmux
-	make zsh
-
 prepare:
 	sudo apt install -y vim curl wget git git-flow libssl-dev apt-transport-https ca-certificates software-properties-common unzip bash-completion \
-		 gconf-service gconf-service-backend gconf2-common libgconf-2-4
+		 gconf-service gconf-service-backend gconf2-common libgconf-2-4 flatpak
 
 fonts:
 	echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
@@ -39,6 +45,11 @@ fonts:
 	wget --content-disposition https://raw.githubusercontent.com/todylu/monaco.ttf/master/monaco.ttf -P ~/.fonts/monaco.ttf
 	chown ${USER}:${USER} ~/.fonts
 	fc-cache -v
+
+java:
+	sudo add-apt-repository ppa:linuxuprising/java -y
+	echo oracle-java11-installer shared/accepted-oracle-license-v1-2 select true | sudo /usr/bin/debconf-set-selections
+	sudo apt install -y oracle-java11-installer oracle-java11-set-default
 
 python:
 	sudo -H apt -y install python-pip
@@ -59,13 +70,6 @@ zsh: files/zshrc
 
 # Development
 
-development:
-	make vscode
-	make atom
-	make aws
-	make ansible
-	make hashicorp
-
 vscode:
 	wget https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode.deb
 	sudo dpkg -i vscode.deb
@@ -77,10 +81,14 @@ atom:
 	sudo dpkg -i atom.deb
 	rm atom.deb
 
-java:
-	sudo add-apt-repository ppa:linuxuprising/java -y
-	echo oracle-java11-installer shared/accepted-oracle-license-v1-2 select true | sudo /usr/bin/debconf-set-selections
-	sudo apt install -y oracle-java11-installer oracle-java11-set-default
+sublimetext:
+	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+	sudo add-apt-repository "deb https://download.sublimetext.com/ apt/stable/"
+	sudo apt-get install sublime-text
+
+docker:
+	make dockerd
+	make docker_compose
 
 aws:
 	pip install awscli --upgrade --user
@@ -88,10 +96,15 @@ aws:
 ansible:
 	pip install ansible --upgrade --user
 
-docker:
+dockerd:
 	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(UBUNTU_CODENAME) stable"
 	sudo apt install -y docker-ce
+	sudo usermod -aG docker ${USER}
+
+docker_compose:
+	sudo curl -L "https://github.com/docker/compose/releases/download/$(DOCKER_COMPOSE_VERSION)/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose
+	sudo chmod +x /usr/local/bin/docker-compose
 
 hashicorp:
 	make terraform
@@ -115,13 +128,7 @@ packer:
 	sudo mv packer /usr/local/bin
 	rm packer.zip
 
-
-browsers:
-	make firefox
-	make chrome
-	make vivaldi
-	make opera
-
+# Browsers
 vivaldi:
 	wget $(VIVALDI_DEB) -O  vivaldi.deb
 	sudo dpkg -i vivaldi.deb
@@ -140,9 +147,125 @@ opera:
 firefox:
 	sudo apt install -y firefox
 
-tweaks:
-	make synapse
+# Tweaks
 
 synapse:
 	sudo add-apt-repository ppa:synapse-core/testing -y
 	sudo apt install -y synapse
+
+compiz: 
+	sudo apt install -y compiz compizconfig-settings-manager compiz-core compiz-plugins compiz-plugins-default compiz-plugins-extra compiz-plugins-main compiz-plugins-main-default
+
+# Tools
+virtualbox:
+	make virtualboxd
+	make virtualbox_extpack
+
+virtualboxd:
+	wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+	wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
+	sudo add-apt-repository -y "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian ${UBUNTU_CODENAME} contrib"
+	sudo apt-get install -y virtualbox-5.2
+
+virtualbox_extpack:
+	curl -O https://download.virtualbox.org/virtualbox/$(VIRTUALBOX_EXTPACK_VERSION)/Oracle_VM_VirtualBox_Extension_Pack-$(VIRTUALBOX_EXTPACK_VERSION).vbox-extpack
+	printf "y\n" | sudo VBoxManage extpack install --replace Oracle_VM_VirtualBox_Extension_Pack-$(VIRTUALBOX_EXTPACK_VERSION).vbox-extpack
+	rm Oracle_VM_VirtualBox_Extension_Pack-$(VIRTUALBOX_EXTPACK_VERSION).vbox-extpack
+
+skype:
+	curl -OL https://go.skype.com/skypeforlinux-64.deb
+	sudo dpkg -i skypeforlinux-64.deb
+	rm skypeforlinux-64.deb
+
+spotify:
+	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 931FF8E79F0876134EDDBDCCA87FF9DF48BF1C90
+	sudo add-apt-repository "deb http://repository.spotify.com stable non-free"
+	sudo apt install -y spotify-client
+
+plank:
+	sudo add-apt-repository -y ppa:ricotz/docky
+	sudo apt install -y plank
+
+whisker:
+	sudo add-apt-repository -y ppa:gottcode/gcppa
+	make update
+	make upgrade
+
+qbittorrent:
+	sudo add-apt-repository -y ppa:qbittorrent-team/qbittorrent-stable
+	sudo apt install -y qbittorrent
+
+corebird:
+	sudo add-apt-repository -y ppa:ubuntuhandbook1/corebird
+	sudo apt install -y corebird
+
+vlc:
+	sudo add-apt-repository -y ppa:videolan/master-daily
+	sudo apt install -y vlc
+
+tilix:
+	sudo add-apt-repository -y ppa:webupd8team/terminix
+	sudo apt install -y tilix
+
+shutter:
+	sudo add-apt-repository -y ppa:linuxuprising/shutter
+	sudo apt install -y shutter
+
+#Design 
+
+inkscape:
+	sudo add-apt-repository -y ppa:inkscape.dev/stable
+	sudo apt install -y inkscape
+
+gimp:
+	sudo add-apt-repository -y ppa:otto-kesselgulasch/gimp
+	sudo apt install -y gimp
+
+# Icons
+
+icon_noobslab:
+	sudo add-apt-repository -y ppa:noobslab/icons
+	sudo apt install -y faience-icon-theme faenza-icon-theme numix-icon-theme 
+
+icon_papirus:
+	sudo add-apt-repository -y ppa:papirus/papirus
+	sudo apt install -y papirus-icon-theme libreoffice-style-papirus
+
+# Themes
+
+theme_noobslab:
+	sudo add-apt-repository -y ppa:noobslab/themes
+	sudo apt install -y plane-theme
+
+# Others
+atareao:
+	sudo add-apt-repository -y ppa:atareao/atareao
+	sudo apt install -y touchpad-indicator my-weather-indicator pomodoro-indicator 
+
+yktoo:
+	sudo add-apt-repository -y ppa:yktooo/ppa
+	sudo apt install -y indicator-sound-switcher
+
+
+other_audio:
+	sudo apt install -y libavcodec-extra libdvdread4 icedax ffmpeg easytag id3tool lame libmad0 mpg321 faac faad \
+		ffmpeg2theora flac icedax id3v2 lame libflac++6v5 libjpeg-progs mjpegtools mpeg2dec mpeg3-utils mpegdemux mpg123 mpg321 \
+		regionset sox uudeview vorbis-tools x264 audacious ubuntu-restricted-extras
+
+other_indicators:
+	sudo apt install -y indicator-multiload
+
+other_internet:
+	sudo apt install -y telegram-desktop pidgin adobe-flashplugin
+
+other_development:
+	sudo apt install -y mysql-workbench pgadmin3 subversion
+
+other_design:
+	sudo apt install -y dia blender shutter
+others:
+	sudo apt install -y wireshark gparted menulibre htop preload filezilla xfce4-goodies xfce4-messenger-plugin \
+		mugshot ncurses-term lm-sensors hddtemp tlp tlp-rdw tp-smapi-dkms smartmontools ethtool \
+		network-manager-pptp-gnome pcmanfm thunar-dropbox-plugin font-manager camorama minidlna \
+		atril zsh inkscape arj p7zip p7zip-full p7zip-rar unrar unace-nonfree p7zip-rar p7zip-full unace \
+		unrar zip unzip sharutils rar uudeview mpack arj cabextract file-roller remmina guake intel-microcode
