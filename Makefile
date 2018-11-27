@@ -11,7 +11,19 @@ VIRTUALBOX_EXTPACK_VERSION = 5.2.22
 
 
 all: upgrade essentials development browsers tweaks tools audio design icons themes other
-update:
+essentials: prepare fonts python tmux zsh java flatpak
+development: vscode atom sublimetext aws ansible hashicorp other_development 
+browsers: firefox chrome vivaldi opera
+tweaks: synapse atareao yktoo compiz
+tools: virtualbox docker skype plank qbittorrent corebird vlc tilix shutter libreoffice
+audio: spotify other_audio
+design: inkscape gimp other_design
+icons: icon_noobslab icon_papirus
+themes: theme_noobslab
+
+# Essentials
+
+update:%
 	sudo apt update --fix-missing
 
 upgrade: update prepare
@@ -22,20 +34,9 @@ upgrade: update prepare
 clean:
 	sudo apt autoremove -y && sudo apt autoclean -y && sudo apt clean all -y
 
-essentials: prepare fonts python tmux zsh java
-development: vscode atom sublimetext aws ansible hashicorp docker other_development
-browsers: firefox chrome vivaldi opera
-tweaks: synapse atareao yktoo compiz
-tools: virtualbox skype plank qbittorrent corebird vlc tilix shutter
-audio: spotify other_audio
-design: inkscape gimp other_design
-icons: icon_noobslab icon_papirus
-themes: theme_noobslab
-
-# Essentials
 prepare:
 	sudo apt install -y vim curl wget git git-flow libssl-dev apt-transport-https ca-certificates software-properties-common unzip bash-completion \
-		 gconf-service gconf-service-backend gconf2-common libgconf-2-4 flatpak
+		 gconf-service gconf-service-backend gconf2-common libgconf-2-4 flatpak gnome-software-plugin-flatpak
 
 fonts:
 	echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
@@ -45,6 +46,13 @@ fonts:
 	wget --content-disposition https://raw.githubusercontent.com/todylu/monaco.ttf/master/monaco.ttf -P ~/.fonts/monaco.ttf
 	chown ${USER}:${USER} ~/.fonts
 	fc-cache -v
+
+flatpak:
+	sudo add-apt-repository -y ppa:alexlarsson/flatpak
+	sudo apt install flatpak
+	sudo apt install -y gnome-software-plugin-flatpak
+	sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
 
 java:
 	sudo add-apt-repository ppa:linuxuprising/java -y
@@ -155,6 +163,10 @@ synapse:
 
 compiz: 
 	sudo apt install -y compiz compizconfig-settings-manager compiz-core compiz-plugins compiz-plugins-default compiz-plugins-extra compiz-plugins-main compiz-plugins-main-default
+	mkdir -p ~/.config/compiz-1/compizconfig/
+	cp files/compiz.profile ~/.config/compiz-1/compizconfig/Default.ini
+	xfconf-query -c xfce4-session -p /sessions/Failsafe/Client0_Command -t string -t string -s compiz -s ccp
+
 
 # Tools
 virtualbox:
@@ -211,6 +223,10 @@ shutter:
 	sudo add-apt-repository -y ppa:linuxuprising/shutter
 	sudo apt install -y shutter
 
+libreoffice:
+	sudo add-apt-repository -y ppa:libreoffice/ppa
+	sudo apt install -y libreoffice libreoffice-l10n-pt-br libreoffice-style-sifr
+
 #Design 
 
 inkscape:
@@ -240,7 +256,7 @@ theme_noobslab:
 # Others
 atareao:
 	sudo add-apt-repository -y ppa:atareao/atareao
-	sudo apt install -y touchpad-indicator my-weather-indicator pomodoro-indicator 
+	sudo apt install -y touchpad-indicator my-weather-indicator
 
 yktoo:
 	sudo add-apt-repository -y ppa:yktooo/ppa
@@ -263,9 +279,10 @@ other_development:
 
 other_design:
 	sudo apt install -y dia blender shutter
+
 others:
 	sudo apt install -y wireshark gparted menulibre htop preload filezilla xfce4-goodies xfce4-messenger-plugin \
 		mugshot ncurses-term lm-sensors hddtemp tlp tlp-rdw tp-smapi-dkms smartmontools ethtool \
 		network-manager-pptp-gnome pcmanfm thunar-dropbox-plugin font-manager camorama minidlna \
 		atril zsh inkscape arj p7zip p7zip-full p7zip-rar unrar unace-nonfree p7zip-rar p7zip-full unace \
-		unrar zip unzip sharutils rar uudeview mpack arj cabextract file-roller remmina guake intel-microcode
+		unrar zip unzip sharutils rar uudeview mpack arj cabextract file-roller remmina guake intel-microcode nvidia-driver-390

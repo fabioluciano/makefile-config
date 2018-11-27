@@ -1,0 +1,16 @@
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+/dev/mapper/chaos-slash   /                ext4    errors=remount-ro  0       2
+/dev/mapper/chaos-boot    /boot            ext4    defaults           0       2
+/dev/mapper/doc-doc       /mnt/doc         ext4    defaults           0       2
+/dev/mapper/doc-srv       /mnt/srv         ext4    defaults           0       2
+/dev/mapper/chaos-trs     /mnt/trs         ext4    defaults           0       2
+/dev/mapper/doc-vdi       /mnt/vdi         ext4    defaults           0       2
+/dev/mapper/chaos-opt     /opt             ext4    defaults           0       2
+/dev/mapper/chaos-swap    none             swap    sw                 0       0
+tmpfs                     /tmp             tmpfs   size=1024m         0       0
