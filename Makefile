@@ -12,10 +12,10 @@ VIRTUALBOX_EXTPACK_VERSION = 5.2.22
 
 all: essentials development browsers tweaks tools audio design icons themes other
 essentials: prepare fonts python tmux zsh java flatpak
-development: vscode atom sublimetext aws ansible hashicorp other_development 
+development: vscode atom sublimetext aws ansible hashicorp dbeaver gitkraken other_development 
 browsers: firefox chrome vivaldi opera
 tweaks: synapse atareao yktoo compiz
-tools: virtualbox docker skype plank qbittorrent corebird vlc tilix shutter libreoffice
+tools: virtualbox docker skype plank qbittorrent corebird vlc tilix shutter peel simplescreenrecorder typora easyssh feedreader libreoffice
 audio: spotify other_audio
 design: inkscape gimp other_design
 icons: icon_noobslab icon_papirus
