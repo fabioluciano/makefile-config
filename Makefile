@@ -10,7 +10,7 @@ VIRTUALBOX_EXTPACK_VERSION = 5.2.22
 
 
 
-all: upgrade essentials development browsers tweaks tools audio design icons themes other
+all: essentials development browsers tweaks tools audio design icons themes other
 essentials: prepare fonts python tmux zsh java flatpak
 development: vscode atom sublimetext aws ansible hashicorp other_development 
 browsers: firefox chrome vivaldi opera
@@ -23,10 +23,10 @@ themes: theme_noobslab
 
 # Essentials
 
-update:%
+update:
 	sudo apt update --fix-missing
 
-upgrade: update prepare
+upgrade: update
 	sudo apt dist-upgrade -y
 	sudo snap refresh
 	sudo flatpak update
@@ -34,7 +34,7 @@ upgrade: update prepare
 clean:
 	sudo apt autoremove -y && sudo apt autoclean -y && sudo apt clean all -y
 
-prepare:
+prepare: upgrade
 	sudo apt install -y vim curl wget git git-flow libssl-dev apt-transport-https ca-certificates software-properties-common unzip bash-completion \
 		 gconf-service gconf-service-backend gconf2-common libgconf-2-4 flatpak gnome-software-plugin-flatpak
 
@@ -136,6 +136,12 @@ packer:
 	sudo mv packer /usr/local/bin
 	rm packer.zip
 
+dbeaver:
+	sudo flatpak install -y flathub io.dbeaver.DBeaverCommunity
+
+gitkraken:
+	sudo flatpak install -y flathub com.axosoft.GitKraken
+
 # Browsers
 vivaldi:
 	wget $(VIVALDI_DEB) -O  vivaldi.deb
@@ -166,7 +172,6 @@ compiz:
 	mkdir -p ~/.config/compiz-1/compizconfig/
 	cp files/compiz.profile ~/.config/compiz-1/compizconfig/Default.ini
 	xfconf-query -c xfce4-session -p /sessions/Failsafe/Client0_Command -t string -t string -s compiz -s ccp
-
 
 # Tools
 virtualbox:
@@ -227,8 +232,26 @@ libreoffice:
 	sudo add-apt-repository -y ppa:libreoffice/ppa
 	sudo apt install -y libreoffice libreoffice-l10n-pt-br libreoffice-style-sifr
 
-#Design 
+peek:
+	sudo add-apt-repository -y ppa:peek-developers/stable
+	sudo apt install -y peek
 
+simplescreenrecorder:
+	sudo add-apt-repository -y ppa:maarten-baert/simplescreenrecorder
+	sudo apt install -y simplescreenrecorder
+
+typora:
+	wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
+	sudo add-apt-repository -y 'deb https://typora.io/linux ./'
+	sudo apt install -y typora
+
+easyssh:
+	sudo flatpak install -y flathub com.github.muriloventuroso.easyssh
+
+feedreader:
+	sudo flatpak install -y flathub org.gnome.FeedReader
+
+#Design 
 inkscape:
 	sudo add-apt-repository -y ppa:inkscape.dev/stable
 	sudo apt install -y inkscape
@@ -275,14 +298,14 @@ other_internet:
 	sudo apt install -y telegram-desktop pidgin adobe-flashplugin
 
 other_development:
-	sudo apt install -y mysql-workbench pgadmin3 subversion
+	sudo apt install -y mysql-workbench pgadmin3 subversion meld
 
 other_design:
 	sudo apt install -y dia blender shutter
 
 others:
 	sudo apt install -y wireshark gparted menulibre htop preload filezilla xfce4-goodies xfce4-messenger-plugin \
-		mugshot ncurses-term lm-sensors hddtemp tlp tlp-rdw tp-smapi-dkms smartmontools ethtool \
+		mugshot ncurses-term lm-sensors hddtemp tlp tlp-rdw tp-smapi-dkms smartmontools ethtool hexchat \
 		network-manager-pptp-gnome pcmanfm thunar-dropbox-plugin font-manager camorama minidlna \
 		atril zsh inkscape arj p7zip p7zip-full p7zip-rar unrar unace-nonfree p7zip-rar p7zip-full unace \
 		unrar zip unzip sharutils rar uudeview mpack arj cabextract file-roller remmina guake intel-microcode nvidia-driver-390
