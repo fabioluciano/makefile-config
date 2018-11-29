@@ -75,6 +75,7 @@ zsh: files/zshrc
 	curl -L git.io/antigen > ~/.local-antigen.zsh
 	cp files/zshrc ~/.zshrc
 	sudo chsh --shell /usr/bin/zsh ${USER}
+	git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
 
 # Development
 
@@ -177,6 +178,14 @@ vundle:
 	git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 	cp files/vimrc ~/.vimrc
 	vim +PluginInstall +qall
+
+initramfs:
+	sudo sed -i 's/RESUME=.*$\/RESUME=none/g' /etc/initramfs-tools/conf.d/resume
+	sudo update-initramfs -u
+
+grub:
+	sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=.*$\/GRUB_CMDLINE_LINUX_DEFAULT="pci=noaer"/g' /etc/default/grub
+	sudo update-grub2
 
 # Tools
 virtualbox:
@@ -312,5 +321,5 @@ others:
 	sudo apt install -y wireshark gparted menulibre htop preload filezilla xfce4-goodies xfce4-messenger-plugin \
 		mugshot ncurses-term lm-sensors hddtemp tlp tlp-rdw tp-smapi-dkms smartmontools ethtool hexchat \
 		network-manager-pptp-gnome pcmanfm thunar-dropbox-plugin font-manager camorama minidlna \
-		atril zsh inkscape arj p7zip p7zip-full p7zip-rar unrar unace-nonfree p7zip-rar p7zip-full unace \
+		atril inkscape arj p7zip p7zip-full p7zip-rar unrar unace-nonfree p7zip-rar p7zip-full unace \
 		unrar zip unzip sharutils rar uudeview mpack arj cabextract file-roller remmina guake intel-microcode nvidia-driver-390

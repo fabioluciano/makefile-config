@@ -26,10 +26,18 @@ Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 Plugin 'mattn/emmet-vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-eunuch'
 Plugin 'tpope/vim-surround'
 Plugin 'w0rp/ale'
+Plugin 'chriskempson/base16-vim'
 
 call vundle#end()
 filetype plugin indent on
+
+let base16colorspace=256  " Access colors present in 256 colorspace
+colorscheme base16-eighties
+
+:set list
+:set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:$,precedes:«,extends:» 
