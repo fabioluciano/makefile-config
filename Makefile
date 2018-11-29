@@ -14,8 +14,8 @@ all: essentials development browsers tweaks tools audio design icons themes othe
 essentials: prepare fonts python tmux zsh java flatpak
 development: vscode atom sublimetext aws ansible hashicorp dbeaver gitkraken other_development 
 browsers: firefox chrome vivaldi opera
-tweaks: synapse atareao yktoo compiz
-tools: virtualbox docker skype plank qbittorrent corebird vlc tilix shutter peel simplescreenrecorder typora easyssh feedreader libreoffice
+tweaks: synapse atareao yktoo compiz vundle
+tools: virtualbox docker skype plank qbittorrent corebird vlc tilix shutter peek simplescreenrecorder typora easyssh feedreader libreoffice
 audio: spotify other_audio
 design: inkscape gimp other_design
 icons: icon_noobslab icon_papirus
@@ -172,6 +172,11 @@ compiz:
 	mkdir -p ~/.config/compiz-1/compizconfig/
 	cp files/compiz.profile ~/.config/compiz-1/compizconfig/Default.ini
 	xfconf-query -c xfce4-session -p /sessions/Failsafe/Client0_Command -t string -t string -s compiz -s ccp
+
+vundle:
+	git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+	cp files/vimrc ~/.vimrc
+	vim +PluginInstall +qall
 
 # Tools
 virtualbox:
