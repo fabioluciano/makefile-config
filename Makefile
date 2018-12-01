@@ -8,14 +8,12 @@ PACKER_VERSION = 1.3.2
 DOCKER_COMPOSE_VERSION = 1.23.1
 VIRTUALBOX_EXTPACK_VERSION = 5.2.22
 
-
-
 all: essentials development browsers tweaks tools audio design icons themes other
 essentials: prepare fonts python tmux zsh java flatpak
-development: vscode atom sublimetext aws ansible hashicorp dbeaver gitkraken other_development 
+development: vscode atom sublimetext aws ansible hashicorp dbeaver gitkraken postman other_development 
 browsers: firefox chrome vivaldi opera
 tweaks: synapse atareao yktoo compiz vundle
-tools: virtualbox docker skype plank qbittorrent corebird vlc tilix shutter peek simplescreenrecorder typora easyssh feedreader libreoffice
+tools: virtualbox docker skype plank wireshark qbittorrent corebird vlc tilix bookworm shutter peek simplescreenrecorder typora easyssh feedreader libreoffice
 audio: spotify other_audio
 design: inkscape gimp other_design
 icons: icon_noobslab icon_papirus
@@ -143,6 +141,9 @@ dbeaver:
 gitkraken:
 	sudo flatpak install -y flathub com.axosoft.GitKraken
 
+postman:
+	sudo flatpak install -y flathub com.getpostman.Postman
+
 # Browsers
 vivaldi:
 	wget $(VIVALDI_DEB) -O  vivaldi.deb
@@ -265,6 +266,13 @@ easyssh:
 feedreader:
 	sudo flatpak install -y flathub org.gnome.FeedReader
 
+wireshark:
+	sudo add-apt-repository -y ppa:wireshark-dev/stable
+	sudo apt install -y wireshark
+
+bookwork:
+	sudo flatpak install -y flathub com.github.babluboy.bookworm
+
 #Design 
 inkscape:
 	sudo add-apt-repository -y ppa:inkscape.dev/stable
@@ -318,7 +326,7 @@ other_design:
 	sudo apt install -y dia blender shutter
 
 others:
-	sudo apt install -y wireshark gparted menulibre htop preload filezilla xfce4-goodies xfce4-messenger-plugin \
+	sudo apt install -y gparted menulibre htop preload filezilla xfce4-goodies xfce4-messenger-plugin \
 		mugshot ncurses-term lm-sensors hddtemp tlp tlp-rdw tp-smapi-dkms smartmontools ethtool hexchat \
 		network-manager-pptp-gnome pcmanfm thunar-dropbox-plugin font-manager camorama minidlna \
 		atril inkscape arj p7zip p7zip-full p7zip-rar unrar unace-nonfree p7zip-rar p7zip-full unace \
