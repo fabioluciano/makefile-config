@@ -27,7 +27,7 @@ update:
 upgrade: update
 	sudo apt dist-upgrade -y
 	sudo snap refresh
-	sudo flatpak update
+	sudo flatpak update -y
 
 clean:
 	sudo apt autoremove -y && sudo apt autoclean -y && sudo apt clean all -y
