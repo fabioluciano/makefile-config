@@ -320,7 +320,7 @@ other_internet:
 	sudo apt install -y telegram-desktop pidgin adobe-flashplugin
 
 other_development:
-	sudo apt install -y mysql-workbench pgadmin3 subversion meld
+	sudo apt install -y mysql-workbench pgadmin3 subversion meld git-flow
 
 other_design:
 	sudo apt install -y dia blender shutter
