@@ -13,7 +13,9 @@ essentials: prepare fonts python tmux zsh java flatpak
 development: vscode atom sublimetext aws ansible hashicorp dbeaver gitkraken postman other_development 
 browsers: firefox chrome vivaldi opera
 tweaks: synapse atareao yktoo compiz vundle
-tools: virtualbox docker skype plank wireshark qbittorrent corebird vlc tilix bookworm shutter peek simplescreenrecorder typora easyssh feedreader libreoffice
+tools: virtualbox docker skype plank wireshark qbittorrent corebird vlc tilix \
+	bookworm shutter peek simplescreenrecorder typora feedreader libreoffice \
+	poedit
 audio: spotify other_audio
 design: inkscape gimp other_design
 icons: icon_noobslab icon_papirus
@@ -260,9 +262,6 @@ typora:
 	sudo add-apt-repository -y 'deb https://typora.io/linux ./'
 	sudo apt install -y typora
 
-easyssh:
-	sudo flatpak install -y flathub com.github.muriloventuroso.easyssh
-
 feedreader:
 	sudo flatpak install -y flathub org.gnome.FeedReader
 
@@ -272,6 +271,9 @@ wireshark:
 
 bookwork:
 	sudo flatpak install -y flathub com.github.babluboy.bookworm
+
+poedit:
+	sudo flatpak install -y flathub net.poedit.Poedit 
 
 #Design 
 inkscape:
