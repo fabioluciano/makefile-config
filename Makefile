@@ -6,11 +6,12 @@ TERRAFORM_VERSION = 0.11.10
 VAGRANT_VERSION = 2.2.1
 PACKER_VERSION = 1.3.2
 DOCKER_COMPOSE_VERSION = 1.23.1
-VIRTUALBOX_EXTPACK_VERSION = 5.2.22
+VIRTUALBOX_EXTPACK_VERSION = 6.0.0
 
 all: essentials development browsers tweaks tools audio design icons themes other
 essentials: prepare fonts python tmux zsh java flatpak
-development: vscode atom sublimetext aws ansible hashicorp dbeaver gitkraken postman other_development 
+development: vscode atom sublimetext aws ansible hashicorp dbeaver gitkraken postman \
+	androidstudio other_development 
 browsers: firefox chrome vivaldi opera
 tweaks: synapse atareao yktoo compiz vundle
 tools: virtualbox docker skype plank wireshark qbittorrent corebird vlc tilix \
@@ -94,6 +95,10 @@ sublimetext:
 	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 	sudo add-apt-repository "deb https://download.sublimetext.com/ apt/stable/"
 	sudo apt-get install sublime-text
+
+androidstudio:
+	sudo add-apt-repository ppa:maarten-fonville/android-studio -y
+	sudo apt install android-studio -y
 
 docker:
 	make dockerd
@@ -199,7 +204,7 @@ virtualboxd:
 	wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
 	wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
 	sudo add-apt-repository -y "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian ${UBUNTU_CODENAME} contrib"
-	sudo apt-get install -y virtualbox-5.2
+	sudo apt-get install -y virtualbox-6.0
 
 virtualbox_extpack:
 	curl -O https://download.virtualbox.org/virtualbox/$(VIRTUALBOX_EXTPACK_VERSION)/Oracle_VM_VirtualBox_Extension_Pack-$(VIRTUALBOX_EXTPACK_VERSION).vbox-extpack
