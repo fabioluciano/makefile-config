@@ -11,7 +11,7 @@ VIRTUALBOX_EXTPACK_VERSION = 6.0.0
 all: essentials development browsers tweaks tools audio design icons themes other
 essentials: prepare fonts python tmux zsh java flatpak
 development: vscode atom sublimetext aws ansible hashicorp dbeaver gitkraken postman \
-	androidstudio other_development 
+	androidstudio apachedirectorystudio  other_development 
 browsers: firefox chrome vivaldi opera
 tweaks: synapse atareao yktoo compiz vundle
 tools: virtualbox docker skype plank wireshark qbittorrent corebird vlc tilix \
@@ -99,6 +99,12 @@ sublimetext:
 androidstudio:
 	sudo add-apt-repository ppa:maarten-fonville/android-studio -y
 	sudo apt install android-studio -y
+
+apachedirectorystudio:
+	wget http://mirror.nbtelecom.com.br/apache/directory/studio/2.0.0.v20180908-M14/ApacheDirectoryStudio-2.0.0.v20180908-M14-linux.gtk.x86_64.tar.gz -O apachedirectory.tar.gz
+	tar xfz apachedirectory.tar.gz
+	sudo mv ApacheDirectoryStudio /opt/apache-directory-studio
+	rm apachedirectory.tar.gz
 
 docker:
 	make dockerd
