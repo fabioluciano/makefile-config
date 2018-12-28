@@ -16,7 +16,7 @@ browsers: firefox chrome vivaldi opera
 tweaks: synapse atareao yktoo compiz vundle
 tools: virtualbox docker skype plank wireshark qbittorrent corebird vlc tilix \
 	bookworm shutter peek simplescreenrecorder typora feedreader libreoffice \
-	poedit
+	poedit darktable
 audio: spotify other_audio
 design: inkscape gimp other_design
 icons: icon_noobslab icon_papirus
@@ -284,7 +284,10 @@ bookwork:
 	sudo flatpak install -y flathub com.github.babluboy.bookworm
 
 poedit:
-	sudo flatpak install -y flathub net.poedit.Poedit 
+	sudo flatpak install -y flathub net.poedit.Poedit
+
+darktable:
+	sudo flatpak install -y flathub org.darktable.Darktable
 
 #Design 
 inkscape:
