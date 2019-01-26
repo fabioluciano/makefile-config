@@ -8,7 +8,7 @@ PACKER_VERSION = 1.3.3
 DOCKER_COMPOSE_VERSION = 1.23.2
 VIRTUALBOX_EXTPACK_VERSION = 6.0.0
 
-all: essentials development browsers tweaks tools audio design icons themes other
+all: essentials development browsers tweaks tools container audio design icons themes other
 essentials: prepare fonts python tmux zsh java flatpak
 development: vscode atom sublimetext aws ansible hashicorp dbeaver gitkraken postman \
 	androidstudio apachedirectorystudio gnome_builder oracle_sql_developer \
