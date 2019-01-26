@@ -29,17 +29,17 @@ themes: theme_noobslab
 update:
 	sudo apt update --fix-missing
 
-upgrade: update
+upgrade: update flatpak
 	sudo apt dist-upgrade -y
 	sudo snap refresh
-	# sudo flatpak update -y
+	sudo flatpak update -y
 
 clean:
 	sudo apt autoremove -y && sudo apt autoclean -y && sudo apt clean all -y
 
 prepare: upgrade
 	sudo apt install -y vim curl wget git git-flow libssl-dev apt-transport-https ca-certificates software-properties-common unzip bash-completion \
-		gconf-service gconf-service-backend gconf2-common libgconf-2-4 flatpak gnome-software-plugin-flatpak
+		gconf-service gconf-service-backend gconf2-common libgconf-2-4
 
 fonts:
 	echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
@@ -51,9 +51,7 @@ fonts:
 	fc-cache -v
 
 flatpak:
-	sudo add-apt-repository -y ppa:alexlarsson/flatpak
-	sudo apt install flatpak
-	sudo apt install -y gnome-software-plugin-flatpak
+	sudo apt install -y flatpak gnome-software-plugin-flatpak
 	sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 
