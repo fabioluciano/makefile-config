@@ -4,13 +4,13 @@ VIVALDI_DEB = $(shell curl -sS https://vivaldi.com/download/ | grep -oP  '<a *?h
 
 TERRAFORM_VERSION = 0.11.11
 VAGRANT_VERSION = 2.2.3
-PACKER_VERSION = 1.3.3
+PACKER_VERSION = 1.3.5
 DOCKER_COMPOSE_VERSION = 1.23.2
 VIRTUALBOX_EXTPACK_VERSION = 6.0.0
 
 all: essentials development browsers tweaks tools container audio design icons themes other
 essentials: prepare fonts python tmux zsh java flatpak
-development: vscode atom sublimetext aws ansible hashicorp dbeaver gitkraken postman \
+development: vscode atom sublimetext aws ansible molecule hashicorp dbeaver gitkraken postman \
 	androidstudio apachedirectorystudio gnome_builder oracle_sql_developer \
 	graphql_client intellij other_development 
 browsers: firefox chrome vivaldi opera
@@ -33,6 +33,8 @@ upgrade: update flatpak
 	sudo apt dist-upgrade -y
 	sudo snap refresh
 	flatpak update -y
+	sudo -H pip install --upgrade pip
+	sudo -H pip3 install --upgrade pip
 
 clean:
 	sudo apt autoremove -y && sudo apt autoclean -y && sudo apt clean all -y
@@ -312,6 +314,12 @@ aws:
 
 ansible:
 	pip install ansible --upgrade --user
+
+molecule:
+	pip install --user molecule
+
+ara:
+	pip install --user ara
 
 dockerd:
 	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
