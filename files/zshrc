@@ -23,6 +23,7 @@ antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
 antigen bundle zsh-users/zsh-history-substring-search
 antigen bundle lukechilds/zsh-nvm
+antigen bundle paulirish/git-open
 
 antigen theme ys
 antigen apply
