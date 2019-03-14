@@ -63,7 +63,7 @@ java:
 	sudo apt install -y oracle-java11-installer oracle-java11-set-default
 
 python:
-	sudo -H apt -y install python-pip
+	sudo -H apt -y install python-pip python-pip3
 	sudo -H pip install --upgrade pip
 	
 tmux: files/tmux.conf
