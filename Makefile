@@ -6,9 +6,9 @@ TERRAFORM_VERSION = 0.11.11
 VAGRANT_VERSION = 2.2.3
 PACKER_VERSION = 1.3.5
 DOCKER_COMPOSE_VERSION = 1.23.2
-VIRTUALBOX_EXTPACK_VERSION = 6.0.0
+VIRTUALBOX_EXTPACK_VERSION = 6.0.4
 
-all: upgrade essentials development browsers tweaks tools container audio design icons themes other
+all: upgrade essentials development browsers tweaks tools container audio design icons themes others
 essentials: prepare fonts python tmux zsh java flatpak
 development: vscode atom sublimetext aws ansible molecule hashicorp dbeaver gitkraken postman \
 	androidstudio apachedirectorystudio gnome_builder oracle_sql_developer \
@@ -25,7 +25,6 @@ icons: icon_noobslab icon_papirus
 themes: theme_noobslab
 
 # Essentials
-
 update:
 	sudo apt update --fix-missing
 
@@ -350,7 +349,7 @@ theme_noobslab:
 # Others
 atareao:
 	sudo add-apt-repository -y ppa:atareao/atareao
-	sudo apt install -y touchpad-indicator my-weather-indicator
+	sudo apt install -y touchpad-indicator my-weather-indicator calendar-indicator
 
 yktoo:
 	sudo add-apt-repository -y ppa:yktooo/ppa
