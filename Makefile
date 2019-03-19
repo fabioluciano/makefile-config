@@ -8,7 +8,7 @@ PACKER_VERSION = 1.3.5
 DOCKER_COMPOSE_VERSION = 1.23.2
 VIRTUALBOX_EXTPACK_VERSION = 6.0.0
 
-all: essentials development browsers tweaks tools container audio design icons themes other
+all: upgrade essentials development browsers tweaks tools container audio design icons themes other
 essentials: prepare fonts python tmux zsh java flatpak
 development: vscode atom sublimetext aws ansible molecule hashicorp dbeaver gitkraken postman \
 	androidstudio apachedirectorystudio gnome_builder oracle_sql_developer \
@@ -39,7 +39,7 @@ upgrade: update flatpak
 clean:
 	sudo apt autoremove -y && sudo apt autoclean -y && sudo apt clean all -y
 
-prepare: upgrade
+prepare:
 	sudo apt install -y vim curl wget git git-flow libssl-dev apt-transport-https ca-certificates software-properties-common unzip bash-completion \
 		gconf-service gconf-service-backend gconf2-common libgconf-2-4
 
@@ -48,7 +48,7 @@ fonts:
 	sudo apt install -y ttf-mscorefonts-installer
 
 	mkdir -p ~/.fonts
-	wget --content-disposition https://raw.githubusercontent.com/todylu/monaco.ttf/master/monaco.ttf -P ~/.fonts/monaco.ttf
+	wget --continue --content-disposition https://raw.githubusercontent.com/todylu/monaco.ttf/master/monaco.ttf -P ~/.fonts/monaco.ttf
 	chown ${USER}:${USER} ~/.fonts
 	fc-cache -v
 
@@ -63,7 +63,7 @@ java:
 	sudo apt install -y oracle-java11-installer oracle-java11-set-default
 
 python:
-	sudo -H apt -y install python-pip python-pip3
+	sudo -H apt -y install python-pip python3-pip
 	sudo -H pip install --upgrade pip
 	
 tmux: files/tmux.conf
@@ -75,7 +75,7 @@ tmux: files/tmux.conf
 
 zsh: files/zshrc
 	sudo apt install -y zsh
-	curl -L git.io/antigen > ~/.local-antigen.zsh
+	curl -L -C - git.io/antigen > ~/.local-antigen.zsh
 	cp files/zshrc ~/.zshrc
 	sudo chsh --shell /usr/bin/zsh ${USER}
 	git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
@@ -83,18 +83,18 @@ zsh: files/zshrc
 # Development
 
 vscode:
-	wget https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode.deb
+	wget --continue https://go.microsoft.com/fwlink/?LinkID=760868 -O vscode.deb
 	sudo dpkg -i vscode.deb
 	rm vscode.deb
 
 atom:
-	wget https://atom.io/download/deb -O atom.deb
+	wget --continue https://atom.io/download/deb -O atom.deb
 	sudo apt install -y gconf2 gvfs-bin
 	sudo dpkg -i atom.deb
 	rm atom.deb
 
 sublimetext:
-	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+	wget --continue -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 	sudo add-apt-repository "deb https://download.sublimetext.com/ apt/stable/"
 	sudo apt-get install sublime-text
 
@@ -106,7 +106,7 @@ intellij:
 	flatpak install -y flathub com.jetbrains.IntelliJ-IDEA-Community
 
 apachedirectorystudio:
-	wget http://mirror.nbtelecom.com.br/apache/directory/studio/2.0.0.v20180908-M14/ApacheDirectoryStudio-2.0.0.v20180908-M14-linux.gtk.x86_64.tar.gz -O apachedirectory.tar.gz
+	wget --continue http://mirror.nbtelecom.com.br/apache/directory/studio/2.0.0.v20180908-M14/ApacheDirectoryStudio-2.0.0.v20180908-M14-linux.gtk.x86_64.tar.gz -O apachedirectory.tar.gz
 	tar xfz apachedirectory.tar.gz
 	sudo mv ApacheDirectoryStudio /opt/apache-directory-studio
 	rm apachedirectory.tar.gz
@@ -117,7 +117,7 @@ hashicorp:
 	make packer
 
 terraform:
-	wget https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_linux_amd64.zip -O terraform.zip
+	wget --continue https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_linux_amd64.zip -O terraform.zip
 	unzip terraform.zip
 	sudo mv terraform /usr/local/bin
 	rm terraform.zip
@@ -153,17 +153,17 @@ graphql_client:
 
 # Browsers
 vivaldi:
-	wget $(VIVALDI_DEB) -O  vivaldi.deb
+	wget --continue $(VIVALDI_DEB) -O  vivaldi.deb
 	sudo dpkg -i vivaldi.deb
 	rm vivaldi.deb
 
 chrome:
-	wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O chrome.deb
+	wget --continue https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O chrome.deb
 	sudo dpkg -i chrome.deb
 	rm chrome.deb
 
 opera:
-	wget http://download4.operacdn.com/ftp/pub/opera/desktop/56.0.3051.99/linux/opera-stable_56.0.3051.99_amd64.deb -O opera.deb
+	wget --continue http://download4.operacdn.com/ftp/pub/opera/desktop/56.0.3051.99/linux/opera-stable_56.0.3051.99_amd64.deb -O opera.deb
 	sudo dpkg -i opera.deb
 	rm opera.deb
 
@@ -201,18 +201,18 @@ virtualbox:
 	make virtualbox_extpack
 
 virtualboxd:
-	wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
-	wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
+	wget --continue -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+	wget --continue -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
 	sudo add-apt-repository -y "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian ${UBUNTU_CODENAME} contrib"
 	sudo apt-get install -y virtualbox-6.0
 
 virtualbox_extpack:
-	curl -O https://download.virtualbox.org/virtualbox/$(VIRTUALBOX_EXTPACK_VERSION)/Oracle_VM_VirtualBox_Extension_Pack-$(VIRTUALBOX_EXTPACK_VERSION).vbox-extpack
+	curl  -O -C - https://download.virtualbox.org/virtualbox/$(VIRTUALBOX_EXTPACK_VERSION)/Oracle_VM_VirtualBox_Extension_Pack-$(VIRTUALBOX_EXTPACK_VERSION).vbox-extpack
 	printf "y\n" | sudo VBoxManage extpack install --replace Oracle_VM_VirtualBox_Extension_Pack-$(VIRTUALBOX_EXTPACK_VERSION).vbox-extpack
 	rm Oracle_VM_VirtualBox_Extension_Pack-$(VIRTUALBOX_EXTPACK_VERSION).vbox-extpack
 
 skype:
-	curl -OL https://go.skype.com/skypeforlinux-64.deb
+	curl -OL -C - https://go.skype.com/skypeforlinux-64.deb
 	sudo dpkg -i skypeforlinux-64.deb
 	rm skypeforlinux-64.deb
 
@@ -263,7 +263,7 @@ simplescreenrecorder:
 	sudo apt install -y simplescreenrecorder
 
 typora:
-	wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
+	wget --continue -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
 	sudo add-apt-repository -y 'deb https://typora.io/linux ./'
 	sudo apt install -y typora
 
@@ -322,13 +322,13 @@ ara:
 	pip install --user ara
 
 dockerd:
-	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	curl -fsSL -C - https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(UBUNTU_CODENAME) stable"
 	sudo apt install -y docker-ce
 	sudo usermod -aG docker ${USER}
 
 docker_compose:
-	sudo curl -L "https://github.com/docker/compose/releases/download/$(DOCKER_COMPOSE_VERSION)/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose
+	sudo curl -L -C - "https://github.com/docker/compose/releases/download/$(DOCKER_COMPOSE_VERSION)/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose
 	sudo chmod +x /usr/local/bin/docker-compose
 
 # Icons
