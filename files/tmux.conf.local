@@ -1,0 +1,9 @@
+
+set -g @tpm_plugins '          \
+  tmux-plugins/tpm             \
+  tmux-plugins/tmux-sensible   \
+  tmux-plugins/tmux-resurrect  \
+  tmux-plugins/tmux-yank       \
+'
+
+run '~/.tmux/plugins/tpm/tpm'
