@@ -302,9 +302,9 @@ kubectl:
 	sudo snap install kubectl --classic
 
 microk8s:
-		sudo snap install microk8s --classic
-		sudo snap disable microk8s
-
+	sudo snap install microk8s --classic
+	sudo snap disable microk8s
+	
 docker:
 	make dockerd
 	make docker_compose
