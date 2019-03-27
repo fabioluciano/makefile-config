@@ -55,7 +55,6 @@ flatpak:
 	sudo apt install -y flatpak gnome-software-plugin-flatpak
 	sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-
 java:
 	sudo add-apt-repository ppa:linuxuprising/java -y
 	echo oracle-java11-installer shared/accepted-oracle-license-v1-2 select true | sudo /usr/bin/debconf-set-selections
@@ -296,6 +295,9 @@ gimp:
 
 bitwarden:
 	flatpak install -y flathub com.bitwarden.desktop
+
+discord:
+	flatpak install flathub com.discordapp.Discord
 
 # Container
 kubectl:
