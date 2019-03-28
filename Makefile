@@ -17,7 +17,7 @@ browsers: firefox chrome vivaldi opera
 tweaks: synapse atareao yktoo compiz vundle
 tools: virtualbox skype plank wireshark qbittorrent corebird vlc tilix \
 	bookworm shutter peek simplescreenrecorder typora feedreader libreoffice \
-	poedit darktable bitwarden freemind
+	poedit darktable bitwarden freemind discord
 container: kubectl docker microk8s
 audio: spotify other_audio
 design: inkscape gimp other_design
@@ -284,6 +284,12 @@ darktable:
 freemind:
 	sudo snap install freemind
 
+bitwarden:
+	flatpak install -y flathub com.bitwarden.desktop
+
+discord:
+	flatpak install flathub com.discordapp.Discord
+
 #Design 
 inkscape:
 	sudo add-apt-repository -y ppa:inkscape.dev/stable
@@ -292,12 +298,6 @@ inkscape:
 gimp:
 	sudo add-apt-repository -y ppa:otto-kesselgulasch/gimp
 	sudo apt install -y gimp
-
-bitwarden:
-	flatpak install -y flathub com.bitwarden.desktop
-
-discord:
-	flatpak install flathub com.discordapp.Discord
 
 # Container
 kubectl:
