@@ -28,17 +28,19 @@ themes: theme_noobslab
 update:
 	sudo apt update --fix-missing
 
-upgrade: update flatpak
+upgrade: update
 	sudo apt dist-upgrade -y
 	sudo snap refresh
 	flatpak update -y
 	sudo -H pip install --upgrade pip
 	sudo -H pip3 install --upgrade pip
 
+	sudo apt autoremove --purge -y
+
 clean:
 	sudo apt autoremove -y && sudo apt autoclean -y && sudo apt clean all -y
 
-prepare:
+prepare: flatpak
 	sudo apt install -y vim curl wget git git-flow libssl-dev apt-transport-https ca-certificates software-properties-common unzip bash-completion \
 		gconf-service gconf-service-backend gconf2-common libgconf-2-4
 
