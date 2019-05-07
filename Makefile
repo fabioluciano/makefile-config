@@ -17,7 +17,7 @@ browsers: firefox chrome vivaldi opera
 tweaks: synapse atareao yktoo compiz vundle
 tools: virtualbox skype plank wireshark qbittorrent corebird vlc tilix \
 	bookworm shutter peek simplescreenrecorder typora feedreader libreoffice \
-	poedit darktable bitwarden freemind discord
+	poedit darktable bitwarden freemind discord telegram other_internet
 container: kubectl docker microk8s
 audio: spotify other_audio
 design: inkscape gimp other_design
@@ -143,7 +143,7 @@ postman:
 	sudo flatpak install -y flathub com.getpostman.Postman
 
 gnome_builder:
-		sudo flatpak install -y flathub org.gnome.Builder
+	sudo flatpak install -y flathub org.gnome.Builder
 
 oracle_sql_developer:
 	sudo snap install osddm
@@ -195,6 +195,9 @@ grub:
 	sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=.*$\/GRUB_CMDLINE_LINUX_DEFAULT="pci=noaer"/g' /etc/default/grub
 	sudo update-grub2
 
+telegram:
+	sudo flatpak install -y flathub org.telegram.desktop
+	
 # Tools
 virtualbox:
 	make virtualboxd
@@ -370,7 +373,7 @@ other_indicators:
 	sudo apt install -y indicator-multiload
 
 other_internet:
-	sudo apt install -y telegram-desktop pidgin adobe-flashplugin
+	sudo apt install -y pidgin adobe-flashplugin
 
 other_development:
 	sudo apt install -y mysql-workbench pgadmin3 subversion meld git-flow
