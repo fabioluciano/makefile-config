@@ -76,10 +76,17 @@ tmux: files/tmux.conf
 zsh: files/zshrc
 	sudo apt install -y zsh
 	curl -L -C - git.io/antigen > ~/.local-antigen.zsh
-	cp files/zshrc ~/.zshrc
-	sudo chsh --shell /usr/bin/zsh ${USER}
-	git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
+	chmod +x ~/.local-antigen.zsh
 
+	sudo chsh --shell /usr/bin/zsh ${USER}
+	make zsh_update base_eighties
+
+zsh_update:
+	cp files/zshrc ~/.zshrc
+
+base_eighties: ~/.config/base16-shell
+	rm -rf ~/.config/base16-shell
+	git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
 # Development
 
 vscode:
