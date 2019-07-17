@@ -10,7 +10,7 @@ VIRTUALBOX_EXTPACK_VERSION = 6.0.8
 
 all: upgrade essentials development browsers tweaks tools container audio design icons themes others
 essentials: prepare fonts python tmux zsh java flatpak
-development: vscode atom sublimetext aws ansible molecule hashicorp dbeaver gitkraken postman \
+development: vscode atom sublimetext aws azure ansible molecule hashicorp dbeaver gitkraken postman \
 	androidstudio apachedirectorystudio gnome_builder oracle_sql_developer \
 	graphql_client intellij other_development 
 browsers: firefox chrome vivaldi opera
@@ -325,6 +325,9 @@ docker:
 
 aws:
 	pip install awscli --upgrade --user
+
+azure:
+	curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 ansible:
 	pip install ansible --upgrade --user
