@@ -2,11 +2,11 @@ UBUNTU_CODENAME = $(shell lsb_release -cs)
 
 VIVALDI_DEB = $(shell curl -sS https://vivaldi.com/download/ | grep -oP  '<a *?href="\K(?<link>.*?amd64.deb)"' | sed 's/"//g' | head -1)
 
-TERRAFORM_VERSION = 0.12.1
-VAGRANT_VERSION = 2.2.4
-PACKER_VERSION = 1.4.1
-DOCKER_COMPOSE_VERSION = 1.24.0
-VIRTUALBOX_EXTPACK_VERSION = 6.0.8
+TERRAFORM_VERSION = 0.12.5
+VAGRANT_VERSION = 2.2.5
+PACKER_VERSION = 1.4.2
+DOCKER_COMPOSE_VERSION = 1.24.1
+VIRTUALBOX_EXTPACK_VERSION = 6.0.10
 
 all: upgrade essentials development browsers tweaks tools container audio design icons themes others
 essentials: prepare fonts python tmux zsh java flatpak
