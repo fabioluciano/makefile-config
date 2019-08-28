@@ -2,9 +2,10 @@ UBUNTU_CODENAME = $(shell lsb_release -cs)
 
 VIVALDI_DEB = $(shell curl -sS https://vivaldi.com/download/ | grep -oP  '<a *?href="\K(?<link>.*?amd64.deb)"' | sed 's/"//g' | head -1)
 
-TERRAFORM_VERSION = 0.12.5
+TERRAFORM_VERSION = 0.12.6
+TERRAFORM_LINT_VERSION = 0.10.0
 VAGRANT_VERSION = 2.2.5
-PACKER_VERSION = 1.4.2
+PACKER_VERSION = 1.4.3
 DOCKER_COMPOSE_VERSION = 1.24.1
 VIRTUALBOX_EXTPACK_VERSION = 6.0.10
 
@@ -14,7 +15,7 @@ development: vscode atom sublimetext aws azure ansible molecule hashicorp dbeave
 	androidstudio apachedirectorystudio gnome_builder oracle_sql_developer \
 	graphql_client intellij other_development 
 browsers: firefox chrome vivaldi opera
-tweaks: synapse atareao yktoo compiz vundle
+tweaks: synapse atareao yktoo compiz vundle guake
 tools: virtualbox skype plank wireshark qbittorrent corebird vlc tilix \
 	bookworm shutter peek simplescreenrecorder typora feedreader libreoffice \
 	poedit darktable bitwarden freemind discord telegram other_internet
@@ -59,8 +60,8 @@ flatpak:
 
 java:
 	sudo add-apt-repository ppa:linuxuprising/java -y
-	echo oracle-java11-installer shared/accepted-oracle-license-v1-2 select true | sudo /usr/bin/debconf-set-selections
-	sudo apt install -y oracle-java11-installer oracle-java11-set-default
+	echo oracle-java12-installer shared/accepted-oracle-license-v1-2 select true | sudo /usr/bin/debconf-set-selections
+	sudo apt install -y oracle-java11-installer oracle-java12-set-default
 
 python:
 	sudo -H apt -y install python-pip python3-pip
@@ -120,6 +121,7 @@ apachedirectorystudio:
 
 hashicorp:
 	make terraform
+	make terraform_lint
 	make vagrant
 	make packer
 
@@ -128,6 +130,12 @@ terraform:
 	unzip terraform.zip
 	sudo mv terraform /usr/local/bin
 	rm terraform.zip
+
+terraform_lint:
+	wget --continue https://github.com/wata727/tflint/releases/download/v$(TERRAFORM_LINT_VERSION)/tflint_linux_amd64.zip -O terraform_lint.zip
+	unzip terraform_lint.zip
+	sudo mv tflint /usr/local/bin
+	rm terraform_lint.zip
 
 vagrant:
 	wget https://releases.hashicorp.com/vagrant/$(VAGRANT_VERSION)/vagrant_$(VAGRANT_VERSION)_x86_64.deb -O vagrant.deb
@@ -193,6 +201,10 @@ vundle:
 	git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 	cp files/vimrc ~/.vimrc
 	vim +PluginInstall +qall
+
+guake:
+	sudo add-apt-repository ppa:linuxuprising/guake
+	sudo apt install guake
 
 initramfs:
 	sudo sed -i 's/RESUME=.*$\/RESUME=none/g' /etc/initramfs-tools/conf.d/resume
@@ -396,4 +408,4 @@ others:
 		mugshot ncurses-term lm-sensors hddtemp tlp tlp-rdw tp-smapi-dkms smartmontools ethtool hexchat \
 		network-manager-pptp-gnome pcmanfm thunar-dropbox-plugin font-manager camorama minidlna \
 		atril inkscape arj p7zip p7zip-full p7zip-rar unrar unace-nonfree p7zip-rar p7zip-full unace \
-		unrar zip unzip sharutils rar uudeview mpack arj cabextract file-roller remmina guake intel-microcode nvidia-driver-390
+		unrar zip unzip sharutils rar uudeview mpack arj cabextract file-roller remmina intel-microcode nvidia-driver-390
