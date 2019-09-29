@@ -15,7 +15,7 @@ development: vscode atom sublimetext aws azure ansible molecule hashicorp dbeave
 	androidstudio apachedirectorystudio gnome_builder oracle_sql_developer \
 	graphql_client intellij other_development 
 browsers: firefox chrome vivaldi opera
-tweaks: synapse atareao yktoo compiz vundle guake
+tweaks: ulauncher atareao yktoo compiz vundle guake
 tools: virtualbox skype plank wireshark qbittorrent corebird vlc tilix \
 	bookworm shutter peek simplescreenrecorder typora feedreader libreoffice \
 	poedit darktable bitwarden freemind discord telegram other_internet
@@ -187,9 +187,9 @@ firefox:
 
 # Tweaks
 
-synapse:
-	sudo add-apt-repository ppa:synapse-core/testing -y
-	sudo apt install -y synapse
+ulauncher:
+	sudo add-apt-repository ppa:agornostal/ulauncher -y
+	sudo apt install -y ulauncher
 
 compiz: 
 	sudo apt install -y compiz compizconfig-settings-manager compiz-core compiz-plugins compiz-plugins-default compiz-plugins-extra compiz-plugins-main compiz-plugins-main-default
