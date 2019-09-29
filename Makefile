@@ -203,8 +203,8 @@ vundle:
 	vim +PluginInstall +qall
 
 guake:
-	sudo add-apt-repository ppa:linuxuprising/guake
-	sudo apt install guake
+	sudo add-apt-repository ppa:linuxuprising/guake -y
+	sudo apt install guake -y
 
 initramfs:
 	sudo sed -i 's/RESUME=.*$\/RESUME=none/g' /etc/initramfs-tools/conf.d/resume
